@@ -6,6 +6,7 @@ const Register = () => {
   const [username, setUserName] = useState<string>("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLoginOrRegister, setIsLoginOrRegister] = useState("register");
   const { setUserName: setLoggedInUserName, setId } = useContext(UserContext);
   async function register(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -38,8 +39,25 @@ const Register = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
         ></input>
         <button className="bg-sky-600 block w-full rounded-sm p-2 text-white">
-          Register
+          {isLoginOrRegister === "register" ? "Register" : "Login"}
         </button>
+        <div className="text-center mt-2">
+          {isLoginOrRegister === "register" ? (
+            <>
+              <p className="inline pr-2">Already a member?</p>
+              <button onClick={() => setIsLoginOrRegister("login")}>
+                Login
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="inline pr-2">Not a member?</p>
+              <button onClick={() => setIsLoginOrRegister("register")}>
+                Register
+              </button>
+            </>
+          )}
+        </div>
       </form>
     </div>
   );

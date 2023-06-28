@@ -1,4 +1,5 @@
-import { ReactNode, createContext, useState } from "react";
+import axios from "axios";
+import { ReactNode, createContext, useState, useEffect } from "react";
 
 interface Props {
   children?: ReactNode;
@@ -19,6 +20,12 @@ export const UserContext = createContext<{
 export function UserContextProvider({ children }: Props) {
   const [userName, setUserName] = useState<string>('');
   const [id, setId] = useState<string>('');
+  useEffect(() => {
+    axios.get("/profile").then(response => {
+      setId(response.data.id)
+      setUserName(response.data.username)
+    })
+  }, [])
   return (
     <UserContext.Provider value={{ userName, setUserName, id, setId }}>
       {children}
