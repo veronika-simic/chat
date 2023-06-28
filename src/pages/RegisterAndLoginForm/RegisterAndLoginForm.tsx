@@ -2,21 +2,22 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 
-const Register = () => {
+const RegisterAndLoginForm = () => {
   const [username, setUserName] = useState<string>("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoginOrRegister, setIsLoginOrRegister] = useState("register");
   const { setUserName: setLoggedInUserName, setId } = useContext(UserContext);
-  async function register(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { data } = await axios.post("/register", { username, password });
+    const url = isLoginOrRegister === 'register' ? '/register' : '/login'
+    const { data } = await axios.post(url, { username, password });
     setLoggedInUserName(username);
     setId(data.id);
   }
   return (
     <div className="bg-slate-100 h-screen flex items-center">
-      <form className="w-64 mx-auto mb-12" onSubmit={register}>
+      <form className="w-64 mx-auto mb-12" onSubmit={handleSubmit}>
         <input
           value={username}
           type="text"
@@ -63,4 +64,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterAndLoginForm;
